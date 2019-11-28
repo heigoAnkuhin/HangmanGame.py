@@ -1,7 +1,8 @@
 import os
 import subprocess
-import sys, csv, random
+import sys, csv, random, codecs
 import traceback
+from urllib.request import urlopen as uopen
 from typing import List
 from tkinter import *
 from tkinter import ttk
@@ -75,7 +76,7 @@ def vordlus() :
                             sisendSonaKuvaFunktsioon(sisendSonaKuva)
                     messagebox.showinfo(message="Tubli! Arvasid õigesti.")
                     if "_" not in sisendSonaKuva :
-                        messagebox.showinfo(message="Sa oled võitnud! Kokku pakkusid " + str(pakkumisArv) + " korda.")               
+                        messagebox.showinfo(message="Sa oled võitnud! Valesti pakkusid " + str(pakkumisArv) + " korda.")
                 else :
                     pakkumisArv += 1
                     messagebox.showinfo(message="Pakutud tähte sõnas ei eksisteeri. Proovi uuesti!")
@@ -83,7 +84,7 @@ def vordlus() :
             root.update()
             return
         else :
-            messagebox.showinfo(message="Sa oled võitnud! Kokku pakkusid " + str(pakkumisArv) + " korda.")
+            messagebox.showinfo(message="Sa oled võitnud! Valesti pakkusid " + str(pakkumisArv) + " korda.")
             joonistus()
             root.update()
             return
@@ -129,8 +130,8 @@ taheKontroll = "abcdefghijklmnopqrstuvwxyzöäüõ"
 def sisendSonaKuvaFunktsioon(letters: List) -> None:
     kuvaSona.set("{0}".format(" ".join(letters)))
 
-with open(r'C:\Users\heigo.ankuhin\Documents\wordlist.txt', encoding='utf-8') as csvfail:
-    csvLugeja = csv.reader(csvfail, delimiter=' ')
+with uopen('https://ankuhin.ee/wp-content/wordlist.txt') as csvfail:
+    csvLugeja = csv.reader(codecs.iterdecode(csvfail, 'utf-8'))
     sonaList = list(csvLugeja)
     suvalineSona = random.choice(sonaList)
     for sona in suvalineSona:
